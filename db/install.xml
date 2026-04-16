@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="blocks/personalnotes/db" VERSION="20260415" COMMENT="XMLDB file for Moodle blocks/personalnotes"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="block_personalnotes" COMMENT="Stores personal note tabs per user per context">
+      <FIELDS>
+        <FIELD NAME="id"           TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid"       TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User who wrote the note"/>
+        <FIELD NAME="contextid"    TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Moodle context (course, module, …)"/>
+        <FIELD NAME="tabname"      TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="Notiz 1" SEQUENCE="false" COMMENT="Tab label"/>
+        <FIELD NAME="sortorder"    TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Display order of tabs"/>
+        <FIELD NAME="notetext"     TYPE="text"             NOTNULL="false" SEQUENCE="false" COMMENT="Note content (HTML)"/>
+        <FIELD NAME="timecreated"  TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int"  LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary"    TYPE="primary" FIELDS="id"/>
+        <KEY NAME="fk_user"    TYPE="foreign" FIELDS="userid"    REFTABLE="user"    REFFIELDS="id"/>
+        <KEY NAME="fk_context" TYPE="foreign" FIELDS="contextid" REFTABLE="context" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="idx_user_context" UNIQUE="false" FIELDS="userid, contextid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
