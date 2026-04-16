@@ -43,7 +43,7 @@ $PAGE->set_pagelayout('incourse');
 $PAGE->set_title(get_string('viewnotes', 'block_personalnotes'));
 $PAGE->set_heading($course->fullname);
 
-// ── Convert date filter strings to timestamps ──────────────────────────────
+// Convert date filter strings to timestamps.
 $tsFrom = 0;
 $tsTo   = 0;
 if ($datefrom !== '') {
@@ -53,7 +53,7 @@ if ($dateto !== '') {
     $tsTo = mktime(23, 59, 59, ...array_map('intval', explode('-', $dateto)));
 }
 
-// ── Collect all context ids for this course (course + modules) ────────────
+// Collect all context ids for this course (course + modules).
 $contextids = [$coursecontext->id];
 $modinfos   = get_fast_modinfo($course);
 foreach ($modinfos->get_cms() as $cm) {
@@ -73,7 +73,7 @@ if (empty($contextids)) {
     );
 }
 
-// ── Enrich + filter notes ─────────────────────────────────────────────────
+// Enrich and filter notes.
 $notedata = [];
 $qlower   = mb_strtolower(trim($q));
 

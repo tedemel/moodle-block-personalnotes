@@ -1,0 +1,54 @@
+/* Block Personal Notes styles */
+
+.block_personalnotes .personalnotes-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+    align-items: center;
+}
+
+.block_personalnotes .personalnotes-tab {
+    position: relative;
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    background: var(--bs-light, #f8f9fa);
+    color: var(--bs-body-color);
+    cursor: pointer;
+}
+
+.block_personalnotes .personalnotes-tab.active {
+    background: var(--bs-white, #fff);
+    border-bottom-color: transparent;
+    font-weight: 600;
+}
+
+.block_personalnotes .personalnotes-tabdelete {
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.block_personalnotes .personalnotes-tabdelete:hover {
+    opacity: 1;
+}
+
+.block_personalnotes .personalnotes-editor {
+    min-height: 90px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-size: 0.9rem;
+}
+
+.block_personalnotes .personalnotes-toolbar {
+    margin-bottom: 4px;
+}
+
+.block_personalnotes .personalnotes-status {
+    font-size: 0.75rem;
+    color: var(--bs-secondary, #6c757d);
+    min-height: 1.2em;
+}
