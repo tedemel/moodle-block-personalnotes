@@ -83,7 +83,8 @@ class block_personalnotes extends block_base {
         $courseid  = $this->page->course->id;
 
         // Load all tabs for this user + context, ordered by sortorder.
-        $tabs = $DB->get_records('block_personalnotes',
+        $tabs = $DB->get_records(
+            'block_personalnotes',
             ['userid' => $USER->id, 'contextid' => $contextid],
             'sortorder ASC, id ASC'
         );

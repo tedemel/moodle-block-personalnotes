@@ -75,7 +75,11 @@ export const init = async(contextId) => {
         }
         statusEl.textContent = msg;
         if (msg) {
-            setTimeout(() => { statusEl.textContent = ''; }, 2000);
+            setTimeout(() => {
+
+                statusEl.textContent = '';
+
+            }, 2000);
         }
     };
 
@@ -98,7 +102,10 @@ export const init = async(contextId) => {
  methodname: 'block_personalnotes_save_note',
  args: {tabid: tabId, notetext: getCleanHtml(editor)},
             }])[0]
-            .then(() => { showStatus(savedStr); return true; })
+            .then(() => {
+            showStatus(savedStr);
+            return true;
+        })
             .catch(Notification.exception);
         }, DEBOUNCE_MS);
     };
@@ -129,7 +136,7 @@ export const init = async(contextId) => {
     root.addEventListener('click', (e) => {
         const tabBtn = e.target.closest('.personalnotes-tab');
         if (!tabBtn || e.target.closest('[data-action]')) {
-            return; // ignore clicks on action buttons inside the tab
+            return; // Ignore clicks on action buttons inside the tab.
         }
         if (tabBtn.classList.contains('active')) {
             return;

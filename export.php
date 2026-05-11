@@ -76,11 +76,10 @@ $filename    = clean_filename($coursetitle . '_notes_' . date('Ymd')) . '.' . $f
 // HTML → ODT helpers.
 
 /**
- * Convert simple HTML to ODT paragraph XML string.
- * Handles: <p>, <div>, <br>, <ul>, <li>, <strong>, <b>, <em>, <i>
+ * * Convert simple HTML to ODT paragraph XML string.
  *
- * @param string $html
- * @return string ODT XML fragment
+ * @param string $html HTML snippet to convert.
+ * @return string ODT body XML.
  */
 function html_to_odt(string $html): string {
     if (empty(trim(strip_tags($html)))) {
@@ -99,7 +98,10 @@ function html_to_odt(string $html): string {
 }
 
 /**
- * Render a DOM block element as an ODT block.
+ * * Render a DOM block element as an ODT block.
+ *
+ * @param \DOMNode $node DOM node to render.
+ * @return string ODT XML fragment.
  */
 function odt_block(DOMNode $node): string {
     if ($node->nodeType === XML_TEXT_NODE) {
@@ -135,7 +137,10 @@ function odt_block(DOMNode $node): string {
 }
 
 /**
- * Render a DOM inline element as an ODT span.
+ * * Render a DOM inline element as an ODT span.
+ *
+ * @param \DOMNode $node DOM node to render.
+ * @return string ODT XML fragment.
  */
 function odt_inline(DOMNode $node): string {
     $out = '';
@@ -167,7 +172,11 @@ function odt_inline(DOMNode $node): string {
 }
 
 /**
- * Render a DOM list element as an ODT (un)ordered list.
+ * * Render a DOM list element as an ODT (un)ordered list.
+ *
+ * @param \DOMNode $node DOM list node.
+ * @param bool $ordered Whether the list is ordered.
+ * @return string ODT XML fragment.
  */
 function odt_list(DOMNode $node, bool $ordered = false): string {
     $style = $ordered ? 'NumberedList' : 'BulletList';
@@ -189,7 +198,10 @@ function odt_list(DOMNode $node, bool $ordered = false): string {
 // HTML → DOCX helpers.
 
 /**
- * Convert an HTML snippet into a DOCX body fragment.
+ * * Convert an HTML snippet into a DOCX body fragment.
+ *
+ * @param string $html HTML snippet to convert.
+ * @return string DOCX body XML.
  */
 function html_to_docx(string $html): string {
     if (empty(trim(strip_tags($html)))) {
@@ -208,7 +220,10 @@ function html_to_docx(string $html): string {
 }
 
 /**
- * Render a DOM block element as a DOCX paragraph.
+ * * Render a DOM block element as a DOCX paragraph.
+ *
+ * @param \DOMNode $node DOM node to render.
+ * @return string DOCX XML fragment.
  */
 function docx_block(DOMNode $node): string {
     if ($node->nodeType === XML_TEXT_NODE) {
@@ -239,7 +254,10 @@ function docx_block(DOMNode $node): string {
 }
 
 /**
- * Render a DOM inline element as a DOCX run.
+ * * Render a DOM inline element as a DOCX run.
+ *
+ * @param \DOMNode $node DOM node to render.
+ * @return string DOCX XML fragment.
  */
 function docx_inline(DOMNode $node): string {
     $out = '';
@@ -279,7 +297,11 @@ function docx_inline(DOMNode $node): string {
 }
 
 /**
- * Render a DOM list element as a DOCX (un)ordered list.
+ * * Render a DOM list element as a DOCX (un)ordered list.
+ *
+ * @param \DOMNode $node DOM list node.
+ * @param bool $ordered Whether the list is ordered.
+ * @return string DOCX XML fragment.
  */
 function docx_list(DOMNode $node, bool $ordered): string {
     $numid = $ordered ? '2' : '1';

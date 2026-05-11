@@ -70,7 +70,8 @@ final class create_tab_test extends \advanced_testcase {
         create_tab::execute($this->contextid, 'B');
         create_tab::execute($this->contextid, 'C');
 
-        $rows = $DB->get_records('block_personalnotes',
+        $rows = $DB->get_records(
+            'block_personalnotes',
             ['userid' => $this->user->id, 'contextid' => $this->contextid],
             'sortorder ASC'
         );
