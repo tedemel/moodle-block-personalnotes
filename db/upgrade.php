@@ -23,6 +23,12 @@
  */
 
 
+/**
+ * Apply upgrade steps for block_personalnotes when moving past $oldversion.
+ *
+ * @param int $oldversion Previously-installed plugin version.
+ * @return bool Always true on success.
+ */
 function xmldb_block_personalnotes_upgrade(int $oldversion): bool {
     global $DB;
     $dbman = $DB->get_manager();

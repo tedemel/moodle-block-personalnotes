@@ -98,9 +98,11 @@ foreach ($notes as $note) {
         $plaintext = mb_strtolower(strip_tags($note->notetext));
         $plainname = mb_strtolower($name);
         $plaintab  = mb_strtolower($note->tabname ?? '');
-        if (strpos($plaintext, $qlower) === false
-                && strpos($plainname, $qlower) === false
-                && strpos($plaintab, $qlower) === false) {
+        if (
+            strpos($plaintext, $qlower) === false
+            && strpos($plainname, $qlower) === false
+            && strpos($plaintab, $qlower) === false
+        ) {
             continue;
         }
     }
