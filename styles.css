@@ -54,12 +54,14 @@
 }
 
 @media print {
+
     .d-print-none {
-    display: none;
-}
+        display: none;
+    }
     .block-personalnotes-view {
-    padding: 0;
-}
+        padding: 0;
+    }
+
 }
 .personalnotes-tab {
     border: 1px solid var(--bs-border-color, #dee2e6);
