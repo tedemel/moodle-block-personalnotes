@@ -67,7 +67,7 @@ export const init = async(contextId) => {
         {key: 'deletetab', component: 'block_personalnotes'},
     ]);
 
- // ── Helpers ────────────────────────────────────────────────────────────
+    // ── Helpers ────────────────────────────────────────────────────────────
 
     const showStatus = (msg) => {
         if (!statusEl) {
@@ -87,7 +87,7 @@ export const init = async(contextId) => {
     const activeEditor = () => root.querySelector('.personalnotes-editor.active');
 
 
- // ── Auto-save ──────────────────────────────────────────────────────────
+    // ── Auto-save ──────────────────────────────────────────────────────────
 
     let saveTimer = null;
 
@@ -110,12 +110,12 @@ export const init = async(contextId) => {
         }, DEBOUNCE_MS);
     };
 
- // Attach input listener to all existing editors.
+    // Attach input listener to all existing editors.
     root.querySelectorAll('.personalnotes-editor').forEach(ed => {
         ed.addEventListener('input', () => schedSave(ed));
     });
 
- // ── Toolbar ────────────────────────────────────────────────────────────
+    // ── Toolbar ────────────────────────────────────────────────────────────
 
     root.addEventListener('mousedown', (e) => {
         const btn = e.target.closest('[data-cmd]');
@@ -131,7 +131,7 @@ export const init = async(contextId) => {
         }
     });
 
- // ── Tab switching ──────────────────────────────────────────────────────
+    // ── Tab switching ──────────────────────────────────────────────────────
 
     root.addEventListener('click', (e) => {
         const tabBtn = e.target.closest('.personalnotes-tab');
@@ -142,14 +142,14 @@ export const init = async(contextId) => {
             return;
         }
 
- // Deactivate current.
+        // Deactivate current.
         root.querySelectorAll('.personalnotes-tab').forEach(t => t.classList.remove('active'));
         root.querySelectorAll('.personalnotes-editor').forEach(ed => {
             ed.classList.remove('active');
             ed.style.display = 'none';
         });
 
- // Activate clicked.
+        // Activate clicked.
         tabBtn.classList.add('active');
         const tabId = tabBtn.dataset.tabid;
         const editor = root.querySelector('.personalnotes-editor[data-tabid="' + tabId + '"]');
@@ -160,7 +160,7 @@ export const init = async(contextId) => {
         }
     });
 
- // ── Add tab (+ button) ─────────────────────────────────────────────────
+    // ── Add tab (+ button) ─────────────────────────────────────────────────
 
     root.querySelector('[data-action="addtab"]')?.addEventListener('click', () => {
         Ajax.call([{
@@ -174,7 +174,7 @@ export const init = async(contextId) => {
         .catch(Notification.exception);
     });
 
- // ── Rename tab (double-click on label) ─────────────────────────────────
+    // ── Rename tab (double-click on label) ─────────────────────────────────
 
     root.addEventListener('dblclick', (e) => {
         const label = e.target.closest('.personalnotes-tablabel');
@@ -223,7 +223,7 @@ export const init = async(contextId) => {
         });
     });
 
- // ── Delete tab (× button) ──────────────────────────────────────────────
+    // ── Delete tab (× button) ──────────────────────────────────────────────
 
     root.addEventListener('click', (e) => {
         const delBtn = e.target.closest('[data-action="deletetab"]');
@@ -252,7 +252,7 @@ export const init = async(contextId) => {
             tabBtn.remove();
             editor?.remove();
 
- // Activate first remaining tab if we deleted the active one.
+            // Activate first remaining tab if we deleted the active one.
             if (wasActive) {
                 const firstTab = root.querySelector('.personalnotes-tab');
                 if (firstTab) {
@@ -260,14 +260,14 @@ export const init = async(contextId) => {
                 }
             }
 
- // Hide delete buttons if only one tab left.
+            // Hide delete buttons if only one tab left.
             updateDeleteVisibility();
             return res;
         })
         .catch(Notification.exception);
     });
 
- // ── Helpers ────────────────────────────────────────────────────────────
+    // ── Helpers ────────────────────────────────────────────────────────────
 
     /**
      * Add a new tab + editor to the DOM and optionally activate it.
@@ -277,7 +277,7 @@ export const init = async(contextId) => {
      * @param {boolean} [activate=false]  Whether to activate the new tab.
      */
     const appendTab = (tabId, tabName, activate = false) => {
- // Deactivate others if activating new.
+    // Deactivate others if activating new.
         if (activate) {
             root.querySelectorAll('.personalnotes-tab').forEach(t => t.classList.remove('active'));
             root.querySelectorAll('.personalnotes-editor').forEach(ed => {
@@ -286,7 +286,7 @@ export const init = async(contextId) => {
             });
         }
 
- // Build tab button.
+        // Build tab button.
         const tabBtn = document.createElement('button');
         tabBtn.type = 'button';
         tabBtn.className = 'personalnotes-tab btn btn-sm' + (activate ? ' active' : '');
@@ -301,7 +301,7 @@ export const init = async(contextId) => {
             root.querySelector('[data-action="addtab"]')
         );
 
- // Build editor pane.
+        // Build editor pane.
         const editor = document.createElement('div');
         editor.className = 'form-control personalnotes-editor' + (activate ? ' active' : '');
         editor.contentEditable = 'true';
@@ -336,6 +336,6 @@ export const init = async(contextId) => {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
- // Initial delete-button visibility.
+        // Initial delete-button visibility.
     updateDeleteVisibility();
 };
