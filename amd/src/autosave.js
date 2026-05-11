@@ -231,8 +231,8 @@ export const init = async(contextId) => {
             return;
         }
         e.stopPropagation();
-        if (!// eslint-disable-next-line no-alert
-            window.confirm(confirmDeleteStr)) {
+        // eslint-disable-next-line no-alert
+        if (!window.confirm(confirmDeleteStr)) {
             return;
         }
         const tabBtn = delBtn.closest('.personalnotes-tab');
