@@ -165,7 +165,7 @@ export const init = async(contextId) => {
     root.querySelector('[data-action="addtab"]')?.addEventListener('click', () => {
         Ajax.call([{
  methodname: 'block_personalnotes_create_tab',
- args: {contextid: contextId, tabname: ''}, // server generates numbered name
+ args: {contextid: contextId, tabname: ''}, // Server generates numbered name.
         }])[0]
         .then((result) => {
             appendTab(result.id, result.tabname, true);
@@ -203,7 +203,10 @@ export const init = async(contextId) => {
  methodname: 'block_personalnotes_rename_tab',
  args: {tabid: tabId, tabname: name},
             }])[0]
-            .then((res) => { newLabel.textContent = res.tabname; return res; })
+            .then((res) => {
+                newLabel.textContent = res.tabname;
+                return res;
+            })
             .catch(Notification.exception);
         };
 
@@ -228,7 +231,8 @@ export const init = async(contextId) => {
             return;
         }
         e.stopPropagation();
-        if (!window.confirm(confirmDeleteStr)) {
+        if (!// eslint-disable-next-line no-alert
+            window.confirm(confirmDeleteStr)) {
             return;
         }
         const tabBtn = delBtn.closest('.personalnotes-tab');
