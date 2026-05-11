@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Export personal notes as ODT or DOCX.
@@ -98,6 +98,9 @@ function html_to_odt(string $html): string {
     return $result ?: '<text:p text:style-name="NoteBody"/>';
 }
 
+/**
+ * Render a DOM block element as an ODT block.
+ */
 function odt_block(DOMNode $node): string {
     if ($node->nodeType === XML_TEXT_NODE) {
         $t = $node->textContent;
@@ -131,12 +134,15 @@ function odt_block(DOMNode $node): string {
     }
 }
 
+/**
+ * Render a DOM inline element as an ODT span.
+ */
 function odt_inline(DOMNode $node): string {
     $out = '';
     foreach ($node->childNodes as $child) {
         if ($child->nodeType === XML_TEXT_NODE) {
             $out .= htmlspecialchars($child->textContent, ENT_XML1 | ENT_QUOTES);
-        } elseif ($child->nodeType === XML_ELEMENT_NODE) {
+        } else if ($child->nodeType === XML_ELEMENT_NODE) {
             $tag = strtolower($child->tagName);
             switch ($tag) {
                 case 'strong':
@@ -160,6 +166,9 @@ function odt_inline(DOMNode $node): string {
     return $out;
 }
 
+/**
+ * Render a DOM list element as an ODT (un)ordered list.
+ */
 function odt_list(DOMNode $node, bool $ordered = false): string {
     $style = $ordered ? 'NumberedList' : 'BulletList';
     $out   = '<text:list text:style-name="' . $style . '">';
@@ -179,6 +188,9 @@ function odt_list(DOMNode $node, bool $ordered = false): string {
 
 // ── HTML → DOCX helpers ───────────────────────────────────────────────────
 
+/**
+ * Convert an HTML snippet into a DOCX body fragment.
+ */
 function html_to_docx(string $html): string {
     if (empty(trim(strip_tags($html)))) {
         return '<w:p><w:r><w:t/></w:r></w:p>';
@@ -195,6 +207,9 @@ function html_to_docx(string $html): string {
     return $result ?: '<w:p><w:r><w:t/></w:r></w:p>';
 }
 
+/**
+ * Render a DOM block element as a DOCX paragraph.
+ */
 function docx_block(DOMNode $node): string {
     if ($node->nodeType === XML_TEXT_NODE) {
         $t = $node->textContent;
@@ -223,6 +238,9 @@ function docx_block(DOMNode $node): string {
     }
 }
 
+/**
+ * Render a DOM inline element as a DOCX run.
+ */
 function docx_inline(DOMNode $node): string {
     $out = '';
     foreach ($node->childNodes as $child) {
@@ -232,7 +250,7 @@ function docx_inline(DOMNode $node): string {
                 $out .= '<w:r><w:t xml:space="preserve">'
                     . htmlspecialchars($t, ENT_XML1 | ENT_QUOTES) . '</w:t></w:r>';
             }
-        } elseif ($child->nodeType === XML_ELEMENT_NODE) {
+        } else if ($child->nodeType === XML_ELEMENT_NODE) {
             $tag = strtolower($child->tagName);
             switch ($tag) {
                 case 'strong':
@@ -260,6 +278,9 @@ function docx_inline(DOMNode $node): string {
     return $out;
 }
 
+/**
+ * Render a DOM list element as a DOCX (un)ordered list.
+ */
 function docx_list(DOMNode $node, bool $ordered): string {
     $numId = $ordered ? '2' : '1';
     $out   = '';
@@ -374,8 +395,8 @@ if ($format === 'odt') {
     // mimetype MUST be first and uncompressed per ODF spec.
     $zip->addFromString('mimetype', 'application/vnd.oasis.opendocument.text');
     $zip->setCompressionName('mimetype', ZipArchive::CM_STORE);
-    $zip->addFromString('content.xml',           $contentxml);
-    $zip->addFromString('meta.xml',              $metaxml);
+    $zip->addFromString('content.xml', $contentxml);
+    $zip->addFromString('meta.xml', $metaxml);
     $zip->addFromString('META-INF/manifest.xml', $manifestxml);
     $zip->close();
 
@@ -484,10 +505,10 @@ if ($format === 'docx') {
     $tmpfile = tempnam(sys_get_temp_dir(), 'pnotes_');
     $zip = new ZipArchive();
     $zip->open($tmpfile, ZipArchive::OVERWRITE);
-    $zip->addFromString('[Content_Types].xml',       $contenttypesxml);
-    $zip->addFromString('_rels/.rels',               $relsxml);
-    $zip->addFromString('word/document.xml',         $documentxml);
-    $zip->addFromString('word/numbering.xml',        $numberingxml);
+    $zip->addFromString('[Content_Types].xml', $contenttypesxml);
+    $zip->addFromString('_rels/.rels', $relsxml);
+    $zip->addFromString('word/document.xml', $documentxml);
+    $zip->addFromString('word/numbering.xml', $numberingxml);
     $zip->addFromString('word/_rels/document.xml.rels', $docRelsxml);
     $zip->close();
 

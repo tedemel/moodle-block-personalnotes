@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Course-level overview of all personal notes for the current user.
@@ -26,9 +26,9 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/accesslib.php');
 
 $courseid = required_param('courseid', PARAM_INT);
-$q        = optional_param('q',        '', PARAM_TEXT);
+$q        = optional_param('q', '', PARAM_TEXT);
 $datefrom = optional_param('datefrom', '', PARAM_TEXT);
-$dateto   = optional_param('dateto',   '', PARAM_TEXT);
+$dateto   = optional_param('dateto', '', PARAM_TEXT);
 
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
@@ -44,13 +44,13 @@ $PAGE->set_title(get_string('viewnotes', 'block_personalnotes'));
 $PAGE->set_heading($course->fullname);
 
 // Convert date filter strings to timestamps.
-$tsFrom = 0;
-$tsTo   = 0;
+$tsfrom = 0;
+$tsto   = 0;
 if ($datefrom !== '') {
-    $tsFrom = mktime(0, 0, 0, ...array_map('intval', explode('-', $datefrom)));
+    $tsfrom = mktime(0, 0, 0, ...array_map('intval', explode('-', $datefrom)));
 }
 if ($dateto !== '') {
-    $tsTo = mktime(23, 59, 59, ...array_map('intval', explode('-', $dateto)));
+    $tsto = mktime(23, 59, 59, ...array_map('intval', explode('-', $dateto)));
 }
 
 // Collect all context ids for this course (course + modules).
@@ -83,10 +83,10 @@ foreach ($notes as $note) {
     }
 
     // Date filter.
-    if ($tsFrom && $note->timemodified < $tsFrom) {
+    if ($tsfrom && $note->timemodified < $tsfrom) {
         continue;
     }
-    if ($tsTo && $note->timemodified > $tsTo) {
+    if ($tsto && $note->timemodified > $tsto) {
         continue;
     }
 
@@ -100,7 +100,7 @@ foreach ($notes as $note) {
         $plaintab  = mb_strtolower($note->tabname ?? '');
         if (strpos($plaintext, $qlower) === false
                 && strpos($plainname, $qlower) === false
-                && strpos($plaintab,  $qlower) === false) {
+                && strpos($plaintab, $qlower) === false) {
             continue;
         }
     }
@@ -122,7 +122,7 @@ foreach ($notes as $note) {
 }
 
 $exporturl = new moodle_url('/blocks/personalnotes/export.php', ['courseid' => $courseid]);
-$formurl   = new moodle_url('/blocks/personalnotes/view.php',   ['courseid' => $courseid]);
+$formurl   = new moodle_url('/blocks/personalnotes/view.php', ['courseid' => $courseid]);
 
 $templatecontext = [
     'coursetitle'   => $course->fullname,
@@ -136,16 +136,16 @@ $templatecontext = [
     'dateto'        => s($dateto),
     'isfiltered'    => ($q !== '' || $datefrom !== '' || $dateto !== ''),
     'backurl'       => (new moodle_url('/course/view.php', ['id' => $courseid]))->out(false),
-    'strexport'     => get_string('exportnotes',   'block_personalnotes'),
-    'strprint'      => get_string('printnotes',    'block_personalnotes'),
-    'strback'       => get_string('backtocourse',  'block_personalnotes'),
-    'strnonotes'    => get_string('nonotes',       'block_personalnotes'),
-    'strnoresults'  => get_string('noresults',     'block_personalnotes'),
-    'strsearch'     => get_string('search',        'block_personalnotes'),
-    'strfrom'       => get_string('datefrom',      'block_personalnotes'),
-    'strto'         => get_string('dateto',        'block_personalnotes'),
-    'strreset'      => get_string('resetfilter',   'block_personalnotes'),
-    'strfilter'     => get_string('filter',        'block_personalnotes'),
+    'strexport'     => get_string('exportnotes', 'block_personalnotes'),
+    'strprint'      => get_string('printnotes', 'block_personalnotes'),
+    'strback'       => get_string('backtocourse', 'block_personalnotes'),
+    'strnonotes'    => get_string('nonotes', 'block_personalnotes'),
+    'strnoresults'  => get_string('noresults', 'block_personalnotes'),
+    'strsearch'     => get_string('search', 'block_personalnotes'),
+    'strfrom'       => get_string('datefrom', 'block_personalnotes'),
+    'strto'         => get_string('dateto', 'block_personalnotes'),
+    'strreset'      => get_string('resetfilter', 'block_personalnotes'),
+    'strfilter'     => get_string('filter', 'block_personalnotes'),
 ];
 
 echo $OUTPUT->header();

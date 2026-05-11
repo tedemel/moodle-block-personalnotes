@@ -22,7 +22,6 @@ use block_personalnotes\external\rename_tab;
  * @covers     \block_personalnotes\external\rename_tab
  */
 final class save_note_test extends \advanced_testcase {
-
     /** @var \stdClass */
     private $course;
     /** @var \stdClass */

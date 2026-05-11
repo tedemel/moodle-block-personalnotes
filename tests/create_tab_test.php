@@ -19,7 +19,6 @@ use block_personalnotes\external\create_tab;
  * @covers     \block_personalnotes\external\create_tab
  */
 final class create_tab_test extends \advanced_testcase {
-
     /** @var \stdClass */
     private $user;
     /** @var int */

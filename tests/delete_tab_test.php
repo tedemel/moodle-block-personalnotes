@@ -20,7 +20,6 @@ use block_personalnotes\external\delete_tab;
  * @covers     \block_personalnotes\external\delete_tab
  */
 final class delete_tab_test extends \advanced_testcase {
-
     /** @var \stdClass */
     private $course;
     /** @var \stdClass */

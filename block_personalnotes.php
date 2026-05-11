@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Block definition for block_personalnotes.
@@ -26,11 +26,18 @@
  * Personal Notes block class.
  */
 class block_personalnotes extends block_base {
-
+    /**
+     * Initialise the block title.
+     */
     public function init() {
         $this->title = get_string('pluginname', 'block_personalnotes');
     }
 
+    /**
+     * Page formats the block applies to: course pages and activities only.
+     *
+     * @return array<string,bool>
+     */
     public function applicable_formats() {
         return [
             'all'         => false,
@@ -40,16 +47,25 @@ class block_personalnotes extends block_base {
         ];
     }
 
+    /**
+     * Disallow more than one block instance per page.
+     */
     public function instance_allow_multiple() {
         return false;
     }
 
+    /**
+     * The block has no global configuration.
+     */
     public function has_config() {
         return false;
     }
 
+    /**
+     * Render the tabbed note interface for the current user/context.
+     */
     public function get_content() {
-        global $USER, $DB, $OUTPUT, $PAGE;
+        global $USER, $DB, $OUTPUT;
 
         if ($this->content !== null) {
             return $this->content;
@@ -105,7 +121,7 @@ class block_personalnotes extends block_base {
 
         $viewurl = new moodle_url('/blocks/personalnotes/view.php', ['courseid' => $courseid]);
 
-        $PAGE->requires->js_call_amd('block_personalnotes/autosave', 'init', [$contextid]);
+        $this->page->requires->js_call_amd('block_personalnotes/autosave', 'init', [$contextid]);
 
         $this->content->text = $OUTPUT->render_from_template(
             'block_personalnotes/block_content',
