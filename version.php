@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2026041503;
-$plugin->requires  = 2025041400;   // Moodle 5.0
+$plugin->requires  = 2025041400; // Moodle 5.0.
 $plugin->component = 'block_personalnotes';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.0.0';
