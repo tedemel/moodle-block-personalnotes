@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Export personal notes as ODT or DOCX.
@@ -282,7 +282,7 @@ function docx_inline(DOMNode $node): string {
  * Render a DOM list element as a DOCX (un)ordered list.
  */
 function docx_list(DOMNode $node, bool $ordered): string {
-    $numId = $ordered ? '2' : '1';
+    $numid = $ordered ? '2' : '1';
     $out   = '';
     foreach ($node->childNodes as $child) {
         if ($child->nodeType !== XML_ELEMENT_NODE) {
@@ -292,7 +292,7 @@ function docx_list(DOMNode $node, bool $ordered): string {
             $out .= '<w:p>'
                 . '<w:pPr><w:numPr>'
                 . '<w:ilvl w:val="0"/>'
-                . '<w:numId w:val="' . $numId . '"/>'
+                . '<w:numId w:val="' . $numid . '"/>'
                 . '</w:numPr></w:pPr>'
                 . docx_inline($child)
                 . '</w:p>';
@@ -392,7 +392,7 @@ if ($format === 'odt') {
     $tmpfile = tempnam(sys_get_temp_dir(), 'pnotes_');
     $zip = new ZipArchive();
     $zip->open($tmpfile, ZipArchive::OVERWRITE);
-    // mimetype MUST be first and uncompressed per ODF spec.
+    // Mimetype MUST be first and uncompressed per ODF spec.
     $zip->addFromString('mimetype', 'application/vnd.oasis.opendocument.text');
     $zip->setCompressionName('mimetype', ZipArchive::CM_STORE);
     $zip->addFromString('content.xml', $contentxml);
@@ -478,7 +478,7 @@ if ($format === 'docx') {
   <w:num w:numId="2"><w:abstractNumId w:val="1"/></w:num>
 </w:numbering>';
 
-    $docRelsxml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    $docrelsxml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1"
     Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering"
@@ -509,7 +509,7 @@ if ($format === 'docx') {
     $zip->addFromString('_rels/.rels', $relsxml);
     $zip->addFromString('word/document.xml', $documentxml);
     $zip->addFromString('word/numbering.xml', $numberingxml);
-    $zip->addFromString('word/_rels/document.xml.rels', $docRelsxml);
+    $zip->addFromString('word/_rels/document.xml.rels', $docrelsxml);
     $zip->close();
 
     header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
