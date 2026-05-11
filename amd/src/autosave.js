@@ -58,13 +58,14 @@ export const init = async(contextId) => {
     if (!root) {
         return;
     }
+
     const statusEl = root.querySelector('[data-personalnotes-status]');
 
     const [savedStr, savingStr, confirmDeleteStr, deleteTabStr] = await getStrings([
-        {key: 'saved', component: 'block_personalnotes'},
-        {key: 'saving', component: 'block_personalnotes'},
+        {key: 'saved',         component: 'block_personalnotes'},
+        {key: 'saving',        component: 'block_personalnotes'},
         {key: 'confirmdelete', component: 'block_personalnotes'},
-        {key: 'deletetab', component: 'block_personalnotes'},
+        {key: 'deletetab',     component: 'block_personalnotes'},
     ]);
 
     // ── Helpers ────────────────────────────────────────────────────────────
@@ -75,37 +76,30 @@ export const init = async(contextId) => {
         }
         statusEl.textContent = msg;
         if (msg) {
-            setTimeout(() => {
-
-                statusEl.textContent = '';
-
-            }, 2000);
+            setTimeout(() => { statusEl.textContent = ''; }, 2000);
         }
     };
 
     /** Return the currently active editor pane. */
     const activeEditor = () => root.querySelector('.personalnotes-editor.active');
 
+    /** Return the currently active tab button. */
+    const activeTabBtn = () => root.querySelector('.personalnotes-tab.active');
 
     // ── Auto-save ──────────────────────────────────────────────────────────
 
     let saveTimer = null;
 
     const schedSave = (editor) => {
-        if (statusEl) {
-            statusEl.textContent = savingStr;
-        }
+        statusEl && (statusEl.textContent = savingStr);
         clearTimeout(saveTimer);
         saveTimer = setTimeout(() => {
             const tabId = parseInt(editor.dataset.tabid, 10);
             Ajax.call([{
- methodname: 'block_personalnotes_save_note',
- args: {tabid: tabId, notetext: getCleanHtml(editor)},
+                methodname: 'block_personalnotes_save_note',
+                args: {tabid: tabId, notetext: getCleanHtml(editor)},
             }])[0]
-            .then(() => {
-            showStatus(savedStr);
-            return true;
-        })
+            .then(() => { showStatus(savedStr); return true; })
             .catch(Notification.exception);
         }, DEBOUNCE_MS);
     };
@@ -136,7 +130,7 @@ export const init = async(contextId) => {
     root.addEventListener('click', (e) => {
         const tabBtn = e.target.closest('.personalnotes-tab');
         if (!tabBtn || e.target.closest('[data-action]')) {
-            return; // Ignore clicks on action buttons inside the tab.
+            return; // ignore clicks on action buttons inside the tab
         }
         if (tabBtn.classList.contains('active')) {
             return;
@@ -151,7 +145,7 @@ export const init = async(contextId) => {
 
         // Activate clicked.
         tabBtn.classList.add('active');
-        const tabId = tabBtn.dataset.tabid;
+        const tabId  = tabBtn.dataset.tabid;
         const editor = root.querySelector('.personalnotes-editor[data-tabid="' + tabId + '"]');
         if (editor) {
             editor.classList.add('active');
@@ -164,8 +158,8 @@ export const init = async(contextId) => {
 
     root.querySelector('[data-action="addtab"]')?.addEventListener('click', () => {
         Ajax.call([{
- methodname: 'block_personalnotes_create_tab',
- args: {contextid: contextId, tabname: ''}, // Server generates numbered name.
+            methodname: 'block_personalnotes_create_tab',
+            args: {contextid: contextId, tabname: ''},  // server generates numbered name
         }])[0]
         .then((result) => {
             appendTab(result.id, result.tabname, true);
@@ -182,9 +176,9 @@ export const init = async(contextId) => {
             return;
         }
         const tabBtn = label.closest('.personalnotes-tab');
-        const tabId = parseInt(tabBtn.dataset.tabid, 10);
-        const input = document.createElement('input');
-        input.type = 'text';
+        const tabId  = parseInt(tabBtn.dataset.tabid, 10);
+        const input  = document.createElement('input');
+        input.type  = 'text';
         input.value = label.textContent.trim();
         input.className = 'personalnotes-tabrename form-control form-control-sm';
         input.style.cssText = 'width:90px;display:inline-block;padding:1px 4px;height:auto;';
@@ -195,31 +189,22 @@ export const init = async(contextId) => {
         const commit = () => {
             const name = input.value.trim() || label.textContent.trim();
             const newLabel = document.createElement('span');
-            newLabel.className = 'personalnotes-tablabel';
+            newLabel.className   = 'personalnotes-tablabel';
             newLabel.textContent = name;
             input.replaceWith(newLabel);
 
             Ajax.call([{
- methodname: 'block_personalnotes_rename_tab',
- args: {tabid: tabId, tabname: name},
+                methodname: 'block_personalnotes_rename_tab',
+                args: {tabid: tabId, tabname: name},
             }])[0]
-            .then((res) => {
-                newLabel.textContent = res.tabname;
-                return res;
-            })
+            .then((res) => { newLabel.textContent = res.tabname; return res; })
             .catch(Notification.exception);
         };
 
         input.addEventListener('blur', commit);
         input.addEventListener('keydown', (ev) => {
-            if (ev.key === 'Enter') {
-                ev.preventDefault();
-                input.blur();
-            }
-            if (ev.key === 'Escape') {
-                input.value = label.textContent;
-                input.blur();
-            }
+            if (ev.key === 'Enter') { ev.preventDefault(); input.blur(); }
+            if (ev.key === 'Escape') { input.value = label.textContent; input.blur(); }
         });
     });
 
@@ -231,23 +216,22 @@ export const init = async(contextId) => {
             return;
         }
         e.stopPropagation();
-        // eslint-disable-next-line no-alert
         if (!window.confirm(confirmDeleteStr)) {
             return;
         }
         const tabBtn = delBtn.closest('.personalnotes-tab');
-        const tabId = parseInt(tabBtn.dataset.tabid, 10);
+        const tabId  = parseInt(tabBtn.dataset.tabid, 10);
 
         Ajax.call([{
- methodname: 'block_personalnotes_delete_tab',
- args: {tabid: tabId},
+            methodname: 'block_personalnotes_delete_tab',
+            args: {tabid: tabId},
         }])[0]
         .then((res) => {
             if (!res.success) {
                 return res;
             }
             const wasActive = tabBtn.classList.contains('active');
-            const editor = root.querySelector('.personalnotes-editor[data-tabid="' + tabId + '"]');
+            const editor    = root.querySelector('.personalnotes-editor[data-tabid="' + tabId + '"]');
 
             tabBtn.remove();
             editor?.remove();
@@ -269,15 +253,9 @@ export const init = async(contextId) => {
 
     // ── Helpers ────────────────────────────────────────────────────────────
 
-    /**
-     * Add a new tab + editor to the DOM and optionally activate it.
-     *
-     * @param {number} tabId    Note tab row id.
-     * @param {string} tabName  Display label of the tab.
-     * @param {boolean} [activate=false]  Whether to activate the new tab.
-     */
+    /** Add a new tab + editor to the DOM and optionally activate it. */
     const appendTab = (tabId, tabName, activate = false) => {
-    // Deactivate others if activating new.
+        // Deactivate others if activating new.
         if (activate) {
             root.querySelectorAll('.personalnotes-tab').forEach(t => t.classList.remove('active'));
             root.querySelectorAll('.personalnotes-editor').forEach(ed => {
@@ -305,8 +283,8 @@ export const init = async(contextId) => {
         const editor = document.createElement('div');
         editor.className = 'form-control personalnotes-editor' + (activate ? ' active' : '');
         editor.contentEditable = 'true';
-        editor.dataset.tabid = tabId;
-        editor.style.cssText = 'min-height:90px;overflow-y:auto;white-space:pre-wrap;'
+        editor.dataset.tabid   = tabId;
+        editor.style.cssText   = 'min-height:90px;overflow-y:auto;white-space:pre-wrap;'
             + (activate ? '' : 'display:none;');
         editor.setAttribute('aria-multiline', 'true');
         editor.addEventListener('input', () => schedSave(editor));
@@ -315,13 +293,14 @@ export const init = async(contextId) => {
         if (activate) {
             editor.focus();
         }
+
         updateDeleteVisibility();
     };
 
     /** Show/hide × buttons depending on tab count. */
     const updateDeleteVisibility = () => {
-        const tabs = root.querySelectorAll('.personalnotes-tab');
-        const show = tabs.length > 1;
+        const tabs    = root.querySelectorAll('.personalnotes-tab');
+        const show    = tabs.length > 1;
         tabs.forEach(t => {
             const del = t.querySelector('[data-action="deletetab"]');
             if (del) {
@@ -336,6 +315,6 @@ export const init = async(contextId) => {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 
-        // Initial delete-button visibility.
+    // Initial delete-button visibility.
     updateDeleteVisibility();
 };
