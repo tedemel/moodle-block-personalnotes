@@ -39,7 +39,7 @@ if (!in_array($format, ['odt', 'docx'])) {
     $format = 'odt';
 }
 
-// ── Collect notes ─────────────────────────────────────────────────────────
+// Collect notes.
 $contextids = [$coursecontext->id];
 $modinfos   = get_fast_modinfo($course);
 foreach ($modinfos->get_cms() as $cm) {
@@ -73,7 +73,7 @@ $coursetitle = $course->fullname;
 $exportdate  = userdate(time());
 $filename    = clean_filename($coursetitle . '_notes_' . date('Ymd')) . '.' . $format;
 
-// ── HTML → ODT helpers ────────────────────────────────────────────────────
+// HTML → ODT helpers.
 
 /**
  * Convert simple HTML to ODT paragraph XML string.
@@ -186,7 +186,7 @@ function odt_list(DOMNode $node, bool $ordered = false): string {
     return $out;
 }
 
-// ── HTML → DOCX helpers ───────────────────────────────────────────────────
+// HTML → DOCX helpers.
 
 /**
  * Convert an HTML snippet into a DOCX body fragment.
@@ -301,7 +301,7 @@ function docx_list(DOMNode $node, bool $ordered): string {
     return $out;
 }
 
-// ── ODT export ────────────────────────────────────────────────────────────
+// ODT export.
 
 if ($format === 'odt') {
     $body = '';
@@ -311,7 +311,7 @@ if ($format === 'odt') {
         $body .= html_to_odt($n['html']) . "\n";
         $body .= '<text:p text:style-name="NoteDate">'
             . htmlspecialchars($n['date'], ENT_XML1) . '</text:p>' . "\n";
-        $body .= '<text:p text:style-name="NoteBody"/>' . "\n";  // blank line between notes
+        $body .= '<text:p text:style-name="NoteBody"/>' . "\n";  // Blank line between notes.
     }
 
     $contentxml = '<?xml version="1.0" encoding="UTF-8"?>
@@ -408,7 +408,7 @@ if ($format === 'odt') {
     exit;
 }
 
-// ── DOCX export ───────────────────────────────────────────────────────────
+// DOCX export.
 
 if ($format === 'docx') {
     $paragraphs = '';
@@ -426,7 +426,7 @@ if ($format === 'docx') {
             . '<w:r><w:rPr><w:color w:val="888888"/><w:i/></w:rPr>'
             . '<w:t>' . htmlspecialchars($n['date'], ENT_XML1) . '</w:t></w:r>'
             . '</w:p>' . "\n";
-        $paragraphs .= '<w:p/>' . "\n";  // blank line between notes
+        $paragraphs .= '<w:p/>' . "\n";  // Blank line between notes.
     }
 
     $documentxml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
