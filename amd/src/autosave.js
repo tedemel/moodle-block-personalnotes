@@ -254,6 +254,13 @@ export const init = async(contextId) => {
     // ── Helpers ────────────────────────────────────────────────────────────
 
     /** Add a new tab + editor to the DOM and optionally activate it. */
+    /**
+     * Add a new tab + editor to the DOM and optionally activate it.
+     *
+     * @param {number} tabId Note tab row id.
+     * @param {string} tabName Display label of the tab.
+     * @param {boolean} [activate=false] Whether to activate the new tab.
+     */
     const appendTab = (tabId, tabName, activate = false) => {
         // Deactivate others if activating new.
         if (activate) {
