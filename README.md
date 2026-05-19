@@ -2,6 +2,7 @@
 
 **Component:** `block_personalnotes`  
 **Requires:** Moodle 5.0+  
+**Supported:** Moodle 5.0, 5.1, 5.2  
 **License:** GNU GPL v3 or later  
 **Author:** Tessa Demel
 
@@ -87,9 +88,4 @@ blocks/personalnotes/
 
 ## Changelog
 
-### 1.0.0 (2026-04-15)
-- Initial stable release
-- Tab management (create, rename, delete)
-- Auto-save via AJAX
-- Export as ODT and DOCX
-- Course-level note overview with search and date filter
+See [CHANGELOG.md](CHANGELOG.md) for the full release history.
