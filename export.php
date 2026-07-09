@@ -87,7 +87,7 @@ function html_to_odt(string $html): string {
     }
     $dom = new DOMDocument('1.0', 'UTF-8');
     libxml_use_internal_errors(true);
-    $dom->loadHTML('<html><body>' . $html . '</body></html>');
+    $dom->loadHTML('<?xml encoding="UTF-8"?><html><body>' . $html . '</body></html>');
     libxml_clear_errors();
     $body   = $dom->getElementsByTagName('body')->item(0);
     $result = '';
@@ -209,7 +209,7 @@ function html_to_docx(string $html): string {
     }
     $dom = new DOMDocument('1.0', 'UTF-8');
     libxml_use_internal_errors(true);
-    $dom->loadHTML('<html><body>' . $html . '</body></html>');
+    $dom->loadHTML('<?xml encoding="UTF-8"?><html><body>' . $html . '</body></html>');
     libxml_clear_errors();
     $body   = $dom->getElementsByTagName('body')->item(0);
     $result = '';

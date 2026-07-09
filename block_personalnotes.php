@@ -112,7 +112,7 @@ class block_personalnotes extends block_base {
         foreach ($tabs as $tab) {
             $tabsdata[] = [
                 'id'        => $tab->id,
-                'tabname'   => s($tab->tabname),
+                'tabname'   => $tab->tabname,
                 'notetext'  => $tab->notetext ?? '',
                 'active'    => $first,
                 'deletable' => $multitabs,

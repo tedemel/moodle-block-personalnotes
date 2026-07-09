@@ -46,11 +46,11 @@ $PAGE->set_heading($course->fullname);
 // Convert date filter strings to timestamps.
 $tsfrom = 0;
 $tsto   = 0;
-if ($datefrom !== '') {
-    $tsfrom = mktime(0, 0, 0, ...array_map('intval', explode('-', $datefrom)));
+if (preg_match('/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $datefrom, $m)) {
+    $tsfrom = mktime(0, 0, 0, (int)$m[2], (int)$m[3], (int)$m[1]);
 }
-if ($dateto !== '') {
-    $tsto = mktime(23, 59, 59, ...array_map('intval', explode('-', $dateto)));
+if (preg_match('/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $dateto, $m)) {
+    $tsto = mktime(23, 59, 59, (int)$m[2], (int)$m[3], (int)$m[1]);
 }
 
 // Collect all context ids for this course (course + modules).
@@ -115,7 +115,7 @@ foreach ($notes as $note) {
 
     $notedata[] = [
         'contextname'  => $name,
-        'tabname'      => s($note->tabname ?? ''),
+        'tabname'      => $note->tabname ?? '',
         'modname'      => $modname,
         'notetext'     => format_text($note->notetext, FORMAT_HTML),
         'timemodified' => userdate($note->timemodified),
@@ -133,9 +133,9 @@ $templatecontext = [
     'exporturl'     => $exporturl->out(false),
     'sesskey'       => sesskey(),
     'formurl'       => $formurl->out(false),
-    'q'             => s($q),
-    'datefrom'      => s($datefrom),
-    'dateto'        => s($dateto),
+    'q'             => $q,
+    'datefrom'      => $datefrom,
+    'dateto'        => $dateto,
     'isfiltered'    => ($q !== '' || $datefrom !== '' || $dateto !== ''),
     'backurl'       => (new moodle_url('/course/view.php', ['id' => $courseid]))->out(false),
     'strexport'     => get_string('exportnotes', 'block_personalnotes'),
